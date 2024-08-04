@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .input_fields {
+            input {
+                width: 500px;
+                height: 39px;
+            }
+
+            select,
+            button {
+                width: 100px;
+                height: 44px;
+            }
+
+            input,
+            select,
+            button {
+                border-radius: 8px;
+                border: 1px solid #808080;
+            }
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 32px;
+        }
+
+        .time,
+        .event {
+            width: 100px;
+            text-align: center;
+        }
+
+        .task {
+            width: 505px;
+            text-align: left;
+            padding-left: 16px;
+        }
+
+        .time,
+        .task,
+        .event {
+            border: 1px solid #808080;
+        }
+
+        .clearBtn {
+            margin-top: 16px;
+            width: 100px;
+            height: 44px;
+            border-radius: 8px;
+            border: 1px solid #808080;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="input_fields">
+        <input type="text" name="task" id="task">
+        <select name="event" id="event">
+            <option value="Start">Start</option>
+            <option value="End">End</option>
+        </select>
+        <button id="submit">Submit</button>
+    </div>
+    <table>
+        <tr>
+            <th class="time">Time</th>
+            <th class="event">Event</th>
+            <th class="task">Task</th>
+        </tr>
+        <tbody></tbody>
+    </table>
+    <button class="clearBtn" id="clearStorage">Clear Storage</button>
+</body>
+<script>
+
+    window.addEventListener("load", function () {
+        let data = [];
+        if (localStorage.getItem("data")) {
+            data = JSON.parse(localStorage.getItem("data"));
+            let tableBody = document.querySelector("tbody");
+            data.forEach((row) => {
+                let rowHTML = `<tr>
+                    <td class="time">${row.time}</td>
+                    <td class="event">${row.event}</td>
+                    <td class="task">${row.task}</td>
+                `
+                tableBody.innerHTML += rowHTML;
+            });
+        }
+        const submitButton = document.getElementById("submit");
+        const clearButton = document.getElementById("clearStorage");
+        const inputBox = document.getElementById("task");
+        submitButton.addEventListener("click", submitHandler);
+        clearButton.addEventListener("click", clearHandler);
+        inputBox.addEventListener("focus", compositionStartHandler);
+
+        function compositionStartHandler() {
+            let task = "Inputting Task";
+            let event = "Start";
+            let time = new Date().toLocaleTimeString();
+            let row = {
+                task,
+                event,
+                time
+            };
+            data.push(row);
+            localStorage.setItem("data", JSON.stringify(data));
+            let tableBody = document.querySelector("tbody");
+            let rowHTML = `<tr>
+            <td class="time">${row.time}</td>
+            <td class="event">${row.event}</td>
+            <td class="task">${row.task}</td>
+        `
+            tableBody.innerHTML += rowHTML;
+        }
+
+        function submitHandler() {
+            let task = "Inputting Task";
+            let event = "End";
+            let time = new Date().toLocaleTimeString();
+            let row = {
+                task,
+                event,
+                time
+            };
+            data.push(row);
+            localStorage.setItem("data", JSON.stringify(data));
+            let tableBody = document.querySelector("tbody");
+            let rowHTML = `<tr>
+            <td class="time">${row.time}</td>
+            <td class="event">${row.event}</td>
+            <td class="task">${row.task}</td>
+        `
+            tableBody.innerHTML += rowHTML;
+
+            task = document.getElementById("task").value;
+            event = document.getElementById("event").value;
+            time = new Date().toLocaleTimeString();
+            row = {
+                task,
+                event,
+                time
+            };
+            data.push(row);
+            localStorage.setItem("data", JSON.stringify(data));
+            taskRowHTML = `<tr>
+            <td class="time">${row.time}</td>
+            <td class="event">${row.event}</td>
+            <td class="task">${row.task}</td>
+        `
+            tableBody.innerHTML += taskRowHTML;
+        }
+
+        function clearHandler() {
+            localStorage.clear();
+            data = [];
+        }
+    })
+
+
+
+
+</script>
+
+</html>
